@@ -1,22 +1,35 @@
-import { Router, Request, Response } from 'express';
-import suppliersRouter from './v1/routes/suppliers';
-import manufacturersRouter from './v1/routes/manufacturers';
-import projectsRouter from './v1/routes/projects';
-import partsRouter from './v1/routes/parts';
-import bomRouter from './v1/routes/bom';
+import express from 'express';
+import createError from 'http-errors';
+import api_routes from './v1';
+import dotenv from "dotenv";
+import { postgres } from './db';
+import { logger_middleware } from './v1/middlewares/logger';
+import { NextFunction, Response, Request } from 'express';
 
-const apiRoutes = Router();
+// load environment settings
+dotenv.config();
 
-// connect index router to subroutes route
-apiRoutes.use('/v1/bom', bomRouter);
-apiRoutes.use('/v1/parts', partsRouter);
-apiRoutes.use('/v1/suppliers', suppliersRouter);
-apiRoutes.use('/v1/manufacturers', manufacturersRouter);
-apiRoutes.use('/v1/projects', projectsRouter);
+// port is now available to the Node.js runtime
+// as if it were an environment variable
+const port = process.env.SERVER_PORT;
 
-// 404 catch for api routes
-apiRoutes.use('/v1', (_req:Request, response:Response):Response => {
-    response.status(404).json({ error: 'API endpoint not found' });
-    return response;
+// connect db
+postgres.connect_db();
+
+const app = express();
+// setup view engine
+app.use(logger_middleware);
+// use express types (make sure this is defined in front of the routes!)
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(api_routes);
+
+// start webserver
+app.listen(port, () => {
+    console.log(`server started at http://localhost:${ port }`);
 });
-export default apiRoutes;
+
+app.use((_req:Request, _res:Response, next:NextFunction) => {
+    // forward 404 error
+    next(createError(404));
+});
