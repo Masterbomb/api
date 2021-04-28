@@ -1,0 +1,48 @@
+---
+- name: Test /suppliers/get/:id
+  uri:
+    url: "{{ api_base_url }}/suppliers/get/{{ post_response.json.id.id }}"
+    method: GET 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+
+- name: Test /suppliers/all
+  uri:
+    url: "{{ api_base_url }}/suppliers/all"
+    method: GET 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+
+- name: Test /projects/get/:id
+  uri:
+    url: "{{ api_base_url }}/projects/get/{{ post_response.json.id.id }}"
+    method: GET 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+
+- name: Test /projects/all
+  uri:
+    url: "{{ api_base_url }}/projects/all"
+    method: GET 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+
+- name: Test /manufacturers/get/:id
+  uri:
+    url: "{{ api_base_url }}/manufacturers/get/{{ post_response.json.id.id }}"
+    method: GET 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+
+- name: Test /manufacturers/all
+  uri:
+    url: "{{ api_base_url }}/manufacturers/all"
+    method: GET 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"

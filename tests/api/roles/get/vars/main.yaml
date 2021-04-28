@@ -1,0 +1,5 @@
+---
+status_code: 200
+get_endpoints:
+  - /suppliers/all
+  - /suppliers/get/{{ supplier_id }}

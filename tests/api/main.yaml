@@ -1,0 +1,27 @@
+---
+# use an ansible playbook to automate endpoint testing
+- name: Masterbomb API Integration Testing
+  hosts: localhost
+  vars_files:
+    - all.yaml
+
+  pre_tasks:
+    # use wait_for to validate github servers can be reached from the target node
+    - name: Validate connection to the api 
+      wait_for:
+        host: "{{ base_url }}"
+        timeout: 10
+        active_connection_states: ESTABLISHED
+
+  tasks:
+    - name: Execute API POST requests
+      include_role:
+        name: post
+
+    # - name: Execute API GET requests
+    #   include_role:
+    #     name: get
+
+    # - name: Execute API DELETE requests
+    #   include_role:
+    #     name: delete

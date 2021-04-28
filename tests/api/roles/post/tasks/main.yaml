@@ -1,0 +1,68 @@
+---
+- name: Test /suppliers/
+  uri:
+    url: "{{ base_url }}{{ base_path }}/suppliers/"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      name: Test Supplier Name
+      website: www.test-supplier.com
+    body_format: json
+  register: post_response
+
+- name: Test /projects/
+  uri:
+    url: "{{ base_url }}{{ base_path }}/projects/"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      name: Test Project Name
+      description: This is a test description
+    body_format: json
+  register: post_response
+
+- name: Test /manufacturers/
+  uri:
+    url: "{{ base_url }}{{ base_path }}/manufacturers/"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      name: Test Manufacturer 
+    body_format: json
+  register: post_response
+
+- name: Test /parts/
+  uri:
+    url: "{{ base_url }}{{ base_path }}/parts/"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      name: TIP22
+      description: Sample part
+      manufacturer_id:
+      supplier_id: 2
+      unit_price: 4.30
+    body_format: json
+  register: post_response
+
+- name: Test /bom/
+  uri:
+    url: "{{ base_url }}{{ base_path }}/bom/"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      project_id: 2
+      part_id: 3
+      quantity: 5
+    body_format: json
+  register: post_response
