@@ -15,16 +15,16 @@ services:
       - "./psql/initdb.sql:/docker-entrypoint-initdb.d/init.sql"
     networks:
       - db
-  masterbom:
-    container_name: masterbom
+  masterbom-api:
+    container_name: masterbom-api
     ports:
       - '${SERVER_PORT}:${SERVER_PORT}'
     # env file specification required due to build context
     env_file: 
       - .env
     build:
-      context: ../
-      dockerfile: docker/node/Dockerfile
+      context: ../ 
+      dockerfile: docker/api/Dockerfile
     environment:
       NODE_ENV: ${NODE_ENV}
       PGHOST: ${PGHOST}
