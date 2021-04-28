@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import pgPromise from "pg-promise";
 
 export interface IPostgres{
@@ -45,8 +44,6 @@ export class Postgres implements IPostgres {
     }
 }
 
-dotenv.config();
-
 // need to validate the types on the process.env vars
 if (process.env.PGDATABASE === undefined ||
     process.env.PGHOST === undefined ||
@@ -54,7 +51,7 @@ if (process.env.PGDATABASE === undefined ||
     process.env.PGUSER === undefined) {
     throw new Error("Database configuration fields invalid. Please check the .env file in root");
 } else {
-    console.log("Database environment passed validation")
+    console.log("Database environment passed validation");
 }
 
 export const postgres = new Postgres(process.env.PGDATABASE, process.env.PGHOST, process.env.PGPORT, process.env.PGUSER);

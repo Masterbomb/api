@@ -1,13 +1,9 @@
 import express from 'express';
 import createError from 'http-errors';
 import api_routes from './v1';
-import dotenv from "dotenv";
 import { postgres } from './db';
 import { logger_middleware } from './v1/middlewares/logger';
 import { NextFunction, Response, Request } from 'express';
-
-// load environment settings
-dotenv.config();
 
 // port is now available to the Node.js runtime
 // as if it were an environment variable
