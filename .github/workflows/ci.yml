@@ -17,7 +17,6 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
-      
       - name: Cache npm modules
         uses: actions/cache@v2
         env:
@@ -38,8 +37,6 @@ jobs:
       - name: Install npm dependancies for ci
         run: npm ci
       - name: tslint
-        run: npm run lint 
-      - name: build 
-        run: npm run build 
-      # - name: tests
-      #   run: npm test 
+        run: npm run lint
+      - name: build
+        run: npm run build
