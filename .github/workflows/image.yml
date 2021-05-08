@@ -10,6 +10,13 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
+      - name: Cache Docker Layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       - name: Docker Hub Auth
         uses: docker/login-action@v1
         with:
@@ -24,7 +31,10 @@ jobs:
         with:
           context: ./
           file: docker/api/Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: masterbom/api:latest
+          cache-from: type=local, src=/tmp/.buildx-cache
+          cache-to: type=local, dest=/tmp/.buildx-cache
       - name: Image Digest
         run: echo ${{ steps.docker_build.outputs.digest }}
