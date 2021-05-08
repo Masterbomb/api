@@ -27,7 +27,7 @@ jobs:
           path: ~/.npm
           # define key comprising of cache hit items
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json')}}
-          restore-key: |
+          restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
