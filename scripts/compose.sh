@@ -37,5 +37,5 @@ STAGE="$1"
 STATE="$2"
 
 printf "%b" "${OKB}Composing docker containers for $STAGE:$STATE${NC}\n" 
-docker-compose -f docker/docker-compose.yaml -f docker/docker-compose."$STAGE".yaml "$STATE"
+docker-compose -f docker/docker-compose.yaml -f docker/"$STAGE".yaml "$STATE"
 printf "%b" "${OKG} ✓ ${NC} docker compose complete\n" 
