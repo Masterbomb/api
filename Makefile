@@ -11,11 +11,11 @@ help:
 
 .PHONY: compose-dev
 compose-dev: ## build docker dev environment 
-	@./scripts/compose.sh dev up
+	@./scripts/compose.sh development up
 
 .PHONY: rm-dev
 rm-dev: ## teardown docker dev environment 
-	@./scripts/compose.sh dev down
+	@./scripts/compose.sh development down
 
 .PHONY: compose-prod
 compose-prod: ## build docker dev environment 
