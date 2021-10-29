@@ -1,7 +1,0 @@
-version: '3.9'
-services:
-  masterbom-api:
-    command: npm run serve 
-    restart: always
-    environment:
-      NODE_ENV: production
