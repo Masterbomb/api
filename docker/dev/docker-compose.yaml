@@ -16,18 +16,18 @@ services:
     container_name: api
     ports:
       - '5000:5000'
-    # env file specification required due to build context
-    env_file: 
-      - .env
     build:
       context: ../../ 
       dockerfile: docker/dev/Dockerfile
+    volumes:
+      - ../../:/app
     environment:
       NODE_ENV: development
       PGHOST: psql
       PGUSER: admin 
       PGDATABASE: dev
       PGPORT: 5432
+      SERVER_PORT: 5000
     depends_on:
       - psql
 
