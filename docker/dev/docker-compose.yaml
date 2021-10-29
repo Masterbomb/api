@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  psql:
+    image: postgres:latest
+    container_name: psql
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin 
+      POSTGRES_DB: dev
+    volumes:
+      - masterbom-db:/var/lib/postgresql/data
+      - "./psql/initdb.sql:/docker-entrypoint-initdb.d/init.sql"
+
+  api:
+    container_name: api
+    ports:
+      - '5000:5000'
+    # env file specification required due to build context
+    env_file: 
+      - .env
+    build:
+      context: ../../ 
+      dockerfile: docker/dev/Dockerfile
+    environment:
+      NODE_ENV: development
+      PGHOST: psql
+      PGUSER: admin 
+      PGDATABASE: dev
+      PGPORT: 5432
+    depends_on:
+      - psql
+
+volumes:
+  masterbom-db:
