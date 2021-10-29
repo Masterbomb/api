@@ -4,15 +4,17 @@
   "description": "Bill of Materials in one place",
   "main": "dist/index.js",
   "scripts": {
-    "clean": "rm -rf dist/*",
+    "clean-dist": "rm -rf dist/*",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "daemon": "nodemon --watch src -e js,ts,ejs,css --exec npm run dev:serve",
     "tsc": "tsc",
     "probe-api": "",
     "dev:serve": "npm run build && npm run serve",
-    "prebuild": "npm run clean",
+    "prebuild": "npm run clean-dist",
     "build": "npm run tsc",
-    "serve": "node ."
+    "serve": "node .",
+    "dev": "docker compose -f docker/dev/docker-compose.yaml up",
+    "clean": "docker-compose -f docker/dev/docker-compose.yaml down --rmi all --volumes"
   },
   "repository": {
     "type": "git",
