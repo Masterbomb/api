@@ -3,10 +3,20 @@ name: deploy
 on:
   push:
     branches: master
+    paths-ignore:
+      - "README.md"
+      - "api.code-workspace"
+      - "sample.env"
+      - ".gitignore"
+      - "LICENSE"
+      - ".github/dependabot.yaml"
+      - ".github/workflows/ci.yml"
+      - "docs/**"
+      - "scripts/**"
 
 jobs:
   deploy:
-    name: Push Docker image to multiple registries
+    name: deploy
     runs-on: ubuntu-latest
     permissions:
       packages: write

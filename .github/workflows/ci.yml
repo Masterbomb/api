@@ -3,6 +3,16 @@ name: ci
 on:
   push:
     branches: master
+    paths-ignore:
+      - "README.md"
+      - "client.code-workspace"
+      - "sample.env"
+      - ".gitignore"
+      - "LICENSE"
+      - ".github/dependabot.yaml"
+      - ".github/workflows/image.yml"
+      - "docs/**"
+      - "scripts/**"
   pull_request:
     branches: master
     type: [opened, synchronized, re-opened]
