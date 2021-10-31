@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "yzhang.markdown-all-in-one",
+      "visualstudioexptteam.vscodeintellicode",
+      "eamodio.gitlens",
+      "mikestead.dotenv",
+      "dbaeumer.vscode-eslint",
+    ]
+  },
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "editor.formatOnSave": true,
+    "eslint.validate": ["html", "javascript", "typescript"]
+  }
+}
