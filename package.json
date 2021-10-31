@@ -14,6 +14,7 @@
     "build": "npm run tsc",
     "serve": "node .",
     "dev": "./scripts/dev.sh",
+    "pull": "docker compose -f docker/dev/docker-compose.yaml pull",
     "clean": "docker compose -f docker/dev/docker-compose.yaml down --rmi all --volumes"
   },
   "repository": {
