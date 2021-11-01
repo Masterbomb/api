@@ -6,6 +6,6 @@ export type ReqParam = {
 } & ParamsDictionary;
 
 // define regex type guard only allowing positive ints
-export function pk_guard(params:ParamsDictionary): params is ReqParam {
+export default (params:ParamsDictionary): params is ReqParam => {
     return /^\d+$/.test(params.id);
-}
+};
