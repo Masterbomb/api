@@ -22,7 +22,7 @@ app.use(api_routes);
 
 // start webserver
 app.listen(port, () => {
-    console.log(`server started at http://localhost:${ port }`);
+    console.log(`serving on port ${ port }`);
 });
 
 app.use((_req:Request, _res:Response, next:NextFunction) => {

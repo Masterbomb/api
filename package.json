@@ -13,8 +13,8 @@
     "prebuild": "npm run clean-dist",
     "build": "npm run tsc",
     "serve": "node .",
-    "dev": "docker compose -f docker/dev/docker-compose.yaml up",
-    "clean": "docker-compose -f docker/dev/docker-compose.yaml down --rmi all --volumes"
+    "dev": "./scripts/dev.sh",
+    "clean": "docker compose -f docker/dev/docker-compose.yaml down --rmi all --volumes"
   },
   "repository": {
     "type": "git",
