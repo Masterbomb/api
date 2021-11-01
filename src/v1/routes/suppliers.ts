@@ -15,19 +15,19 @@ const suppliersRouter = Router();
 const table = "suppliers";
 
 /** GET /v1/suppliers/ */
-suppliersRouter.get('/', (_request:Request, response:Response):void => {
+suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = postgres.get_db();
-        const suppliers = db.any(`
+        const suppliers = await db.any(`
             SELECT id, name, website FROM ${table}`
         );
         response.json(suppliers);
-    } catch (err: Error) {
+    } catch (err) {
         console.error(err);
-        response.status(500).json({ error: err.message});
+        response.status(500).json({ error: (err as Error).message});
     }
-    return response.send();
+    return response;
 });
 
 /** GET /v1/suppliers/:id */

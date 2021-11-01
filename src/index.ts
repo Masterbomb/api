@@ -4,7 +4,6 @@ import api_routes from './v1';
 import { postgres } from './db';
 import { logger_middleware } from './v1/middlewares/logger';
 import { NextFunction, Response, Request } from 'express';
-import { exit } from 'process';
 
 // port is now available to the Node.js runtime
 // as if it were an environment variable
@@ -23,7 +22,7 @@ app.use(api_routes);
 
 if (!port) {
     console.log("port unspecified.");
-    exit(1);
+    process.exit(1);
 }
 
 // start webserver
