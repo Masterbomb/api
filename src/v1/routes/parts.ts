@@ -7,6 +7,8 @@ import { Manufacturer } from "../entities/manufacturer";
 
 
 const isValidSupplier: CustomValidator = async (id:number) => {
+  // check for non-inclusive supplier
+  if (!id) return;
   await getRepository(Supplier).findOne(id).then(user => {
     if (!user) {
       return Promise.reject('Supplier does not exist');
@@ -16,6 +18,8 @@ const isValidSupplier: CustomValidator = async (id:number) => {
 };
 
 const isValidManufacturer: CustomValidator = async (id:number) => {
+  // check for non-inclusive supplier
+  if (!id) return;
   await getRepository(Manufacturer).findOne(id).then(user => {
     if (!user) {
       return Promise.reject('Manufacturer does not exist');
