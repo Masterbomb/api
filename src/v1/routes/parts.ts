@@ -7,8 +7,6 @@ import { Manufacturer } from "../entities/manufacturer";
 
 
 const isValidSupplier: CustomValidator = async (id:number) => {
-  // check for non-inclusive supplier
-  if (!id) return;
   await getRepository(Supplier).findOne(id).then(user => {
     if (!user) {
       return Promise.reject('Supplier does not exist');
@@ -18,8 +16,6 @@ const isValidSupplier: CustomValidator = async (id:number) => {
 };
 
 const isValidManufacturer: CustomValidator = async (id:number) => {
-  // check for non-inclusive supplier
-  if (!id) return;
   await getRepository(Manufacturer).findOne(id).then(user => {
     if (!user) {
       return Promise.reject('Manufacturer does not exist');
@@ -42,7 +38,7 @@ export const partRoutes: Route[] = [
     controller: PartController,
     action: Queries.one,
     validation: [
-      param('id').isInt(),
+      param('id').isInt({min: 0}),
     ]
   },
   {
@@ -52,9 +48,9 @@ export const partRoutes: Route[] = [
     action: Queries.save,
     validation: [
       body('name').isString(),
-      body('manufacturer').custom(isValidManufacturer),
-      body('supplier').custom(isValidSupplier),
-      body('unit_price').isNumeric(),
+      body('manufacturer').optional().custom(isValidManufacturer),
+      body('supplier').optional().custom(isValidSupplier),
+      body('unit_price').isFloat({ min: 0 }),
     ],
   },
   {
@@ -63,7 +59,7 @@ export const partRoutes: Route[] = [
     controller: PartController,
     action: Queries.remove,
     validation: [
-      param('id').isInt(),
+      param('id').isInt({min: 0}),
     ],
   }
 ];
