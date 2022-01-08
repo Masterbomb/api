@@ -1,8 +1,18 @@
-import { body, param } from "express-validator";
+import { body, param, ValidationChain } from "express-validator";
 import { ManufacturerController } from "../controllers/manufacturers";
 import { Route, Queries, HTTPRequests } from "./interfaces";
 
 
+// validation definitions
+const pkValidation: ValidationChain[] = [
+  param('id').isInt({min:0})
+];
+
+const postValidation: ValidationChain[] = [
+  body('name').isString()
+];
+
+// route definitions
 export const manufacturerRoutes: Route[] = [
   {
     method: HTTPRequests.get,
@@ -16,35 +26,27 @@ export const manufacturerRoutes: Route[] = [
     path: "/manufacturers/:id",
     controller: ManufacturerController,
     action: Queries.one,
-    validation: [
-      param('id').isInt({min:0})
-    ]
+    validation: pkValidation
   },
   {
     method: HTTPRequests.post,
     path: "/manufacturers",
     controller: ManufacturerController,
     action: Queries.save,
-    validation: [
-      body('name').isString()
-    ],
+    validation: postValidation,
   },
   {
     method: HTTPRequests.put,
     path: "/manufacturers/:id",
     controller: ManufacturerController,
     action: Queries.update,
-    validation: [
-      param('id').isInt({min:0})
-    ]
+    validation: [...pkValidation, ...postValidation]
   },
   {
     method: HTTPRequests.delete,
     path: "/manufacturers/:id",
     controller: ManufacturerController,
     action: Queries.remove,
-    validation: [
-      param('id').isInt({min:0}),
-    ],
+    validation: pkValidation,
   }
 ];

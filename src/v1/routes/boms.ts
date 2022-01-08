@@ -1,10 +1,11 @@
 import { getRepository } from "typeorm";
-import { body, param, CustomValidator} from "express-validator";
+import { body, param, CustomValidator, ValidationChain} from "express-validator";
 import { BomController } from "../controllers/boms";
 import { Route, Queries, HTTPRequests } from "./interfaces";
 import { Project } from "../entities/project";
 import { Part } from "../entities/part";
 
+// validation definitions
 const isValidProject: CustomValidator = async (id:number) => {
   await getRepository(Project).findOne(id).then(project => {
     if (!project) {
@@ -23,6 +24,16 @@ const isValidPart: CustomValidator = async (id:number) => {
   });
 };
 
+const pkValidation: ValidationChain[] = [
+  param('id').isInt({min: 0})
+];
+
+const postValidation: ValidationChain[] = [
+  body('project').isInt({min: 0}).custom(isValidProject),
+  body('part').isInt({min: 0}).custom(isValidPart),
+  body('quantity').isInt({min: 0}),
+  body('revision').isString(),
+];
 
 export const bomRoutes: Route[] = [
   {
@@ -37,20 +48,13 @@ export const bomRoutes: Route[] = [
     path: "/boms",
     controller: BomController,
     action: Queries.save,
-    validation: [
-      body('project').isInt({min: 0}).custom(isValidProject),
-      body('part').isInt({min: 0}).custom(isValidPart),
-      body('quantity').isInt({min: 0}),
-      body('revision').isString(),
-    ],
+    validation: postValidation
   },
   {
     method: HTTPRequests.delete,
     path: "/boms/:id",
     controller: BomController,
     action: Queries.remove,
-    validation: [
-      param('id').isInt({min: 0}),
-    ],
+    validation: pkValidation,
   }
 ];

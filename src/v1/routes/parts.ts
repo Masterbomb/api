@@ -7,8 +7,8 @@ import { Manufacturer } from "../entities/manufacturer";
 
 // validation definitions
 const isValidSupplier: CustomValidator = async (id:number) => {
-  await getRepository(Supplier).findOne(id).then(user => {
-    if (!user) {
+  await getRepository(Supplier).findOne(id).then(supplier => {
+    if (!supplier) {
       return Promise.reject('Supplier does not exist');
     }
     return Promise.resolve('Supplier exists');
@@ -16,8 +16,8 @@ const isValidSupplier: CustomValidator = async (id:number) => {
 };
 
 const isValidManufacturer: CustomValidator = async (id:number) => {
-  await getRepository(Manufacturer).findOne(id).then(user => {
-    if (!user) {
+  await getRepository(Manufacturer).findOne(id).then(mfn => {
+    if (!mfn) {
       return Promise.reject('Manufacturer does not exist');
     }
     return Promise.resolve('Manufacturer exists');
