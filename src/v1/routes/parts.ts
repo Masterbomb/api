@@ -54,6 +54,15 @@ export const partRoutes: Route[] = [
     ],
   },
   {
+    method: HTTPRequests.put,
+    path: "/parts/:id",
+    controller: PartController,
+    action: Queries.save,
+    validation: [
+      param('id').isInt({min: 0}),
+    ],
+  },
+  {
     method: HTTPRequests.delete,
     path: "/parts/:id",
     controller: PartController,
