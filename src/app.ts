@@ -69,10 +69,11 @@ routes.forEach(route => {
         // custom success response for each http request type
         if (route.method === HTTPRequests.delete) {
           return res.status(204).send();
+        } else if (route.method === HTTPRequests.post || route.method === HTTPRequests.put){
+          return res.status(201).send(result);
         } else {
           return res.json(result);
         }
-
       } catch(err) {
         console.log(err.statusCode);
         next(err);
