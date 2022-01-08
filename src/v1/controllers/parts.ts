@@ -2,8 +2,6 @@ import { getRepository } from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { ResourceNotFound, HTTPError } from "../util/errors";
 import { Part } from "../entities/part";
-import { Supplier } from "../entities/supplier";
-import { Manufacturer } from "../entities/manufacturer";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 /**
@@ -28,8 +26,6 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 export class PartController {
 
   private partRepository = getRepository(Part);
-  private supplierRepository = getRepository(Supplier);
-  private manufacturerRepository = getRepository(Manufacturer);
 
   /**
    * @openapi
@@ -113,16 +109,15 @@ export class PartController {
    *       400:
    *         description: Bad request. Request may of failed validation checks.
    */
-  async save(request: Request, _response: Response, _next: NextFunction) {
+  async save(request: Request, response: Response, next: NextFunction) {
     let result: Part;
     try{
-      result = (await this.partRepository.save(request.body) as Part);
+      result = await (this.partRepository.save(request.body) as Promise<Part>);
     } catch (err) {
       throw new HTTPError((err as Error).message);
     }
-    result.supplier = (await this.supplierRepository.findOne(result.supplier) as Supplier);
-    result.manufacturer = (await this.manufacturerRepository.findOne(result.manufacturer) as Manufacturer);
-    return result;
+    request.params.id = result.id.toString();
+    return this.one(request, response, next);
   }
 
   /**
@@ -160,11 +155,11 @@ export class PartController {
    *       404:
    *         description: part not found
    */
-   async update(request: Request, _response: Response, _next: NextFunction) {
+   async update(request: Request, response: Response, next: NextFunction) {
     const result = await this.partRepository.findOne(request.params.id);
     if (!result) throw new ResourceNotFound(`Could not find resource for part: ${request.params.id}`);
     await this.partRepository.update(request.params.id, request.body as QueryDeepPartialEntity<Part>);
-    return this.partRepository.findOne(request.params.id, {relations: ["supplier", "manufacturer"]});
+    return this.one(request, response, next);
   }
 
   /**
