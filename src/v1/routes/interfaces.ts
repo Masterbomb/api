@@ -9,6 +9,7 @@ export enum Queries {
   all="all",
   one="one",
   save="save",
+  update="update",
   remove="remove",
 }
 
