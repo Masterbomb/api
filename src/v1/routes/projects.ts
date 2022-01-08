@@ -17,7 +17,7 @@ export const projectRoutes: Route[] = [
     controller: ProjectController,
     action: Queries.one,
     validation: [
-      param('id').isInt(),
+      param('id').isInt({min:0}),
     ]
   },
   {
@@ -27,7 +27,6 @@ export const projectRoutes: Route[] = [
     action: Queries.save,
     validation: [
       body('name').isString(),
-      body('revision').isString(),
       body('description').isString(),
     ],
   },
@@ -37,7 +36,7 @@ export const projectRoutes: Route[] = [
     controller: ProjectController,
     action: Queries.remove,
     validation: [
-      param('id').isInt(),
+      param('id').isInt({min:0}),
     ],
   }
 ];
