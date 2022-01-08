@@ -17,7 +17,7 @@ export const manufacturerRoutes: Route[] = [
     controller: ManufacturerController,
     action: Queries.one,
     validation: [
-      param('id').isInt(),
+      param('id').isInt({min:0}),
     ]
   },
   {
@@ -35,7 +35,7 @@ export const manufacturerRoutes: Route[] = [
     controller: ManufacturerController,
     action: Queries.remove,
     validation: [
-      param('id').isInt(),
+      param('id').isInt({min:0}),
     ],
   }
 ];
