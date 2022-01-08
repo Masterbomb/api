@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { ResourceNotFound, HTTPError } from "../util/errors";
 import { Manufacturer } from "../entities/manufacturer";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 /**
  * @openapi
@@ -146,7 +147,7 @@ export class ManufacturerController {
   async update(request: Request, _response: Response, _next: NextFunction) {
     const result = await this.manufacturerRepository.findOne(request.params.id);
     if (!result) throw new ResourceNotFound(`Could not find resource for manufacturer: ${request.params.id}`);
-    await this.manufacturerRepository.update(request.params.id, request.body);
+    await this.manufacturerRepository.update(request.params.id, request.body as QueryDeepPartialEntity<Manufacturer>);
     return this.manufacturerRepository.findOne(request.params.id);
   }
 
