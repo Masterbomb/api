@@ -5,6 +5,7 @@ import { Supplier } from './v1/entities/supplier';
 import { Manufacturer } from './v1/entities/manufacturer';
 import { Part } from './v1/entities/part';
 import { Project } from './v1/entities/project';
+import { Bom } from './v1/entities/bom';
 
 // setup ORM
 createConnection({
@@ -18,7 +19,8 @@ createConnection({
     Supplier,
     Manufacturer,
     Part,
-    Project
+    Project,
+    Bom
   ]
 }).then(_connection => {
   // start webserver
