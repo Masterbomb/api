@@ -6,7 +6,8 @@ import {
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne
+  ManyToOne,
+  JoinColumn
 } from "typeorm";
 import { Manufacturer } from "./manufacturer";
 import { Supplier } from "./supplier";
@@ -68,12 +69,14 @@ export class Part extends BaseEntity {
     onDelete: 'SET NULL',
     nullable: true
   })
+  @JoinColumn({ name: "manufacturer_id" })
   manufacturer: Manufacturer;
 
   @ManyToOne(() => Supplier, (supplier) => supplier.id, {
     onDelete: 'SET NULL',
     nullable: true
   })
+  @JoinColumn({ name: "supplier_id" })
   supplier: Supplier;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
