@@ -35,7 +35,7 @@ export const supplierRoutes: Route[] = [
   },
   {
     method: HTTPRequests.put,
-    path: "suppliers/:id",
+    path: "/suppliers/:id",
     controller: SupplierController,
     action: Queries.update,
     validation: [...pkValidation, ...postValidation]
