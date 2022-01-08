@@ -24,7 +24,7 @@ const isValidPart: CustomValidator = async (id:number) => {
 };
 
 
-export const projectRoutes: Route[] = [
+export const bomRoutes: Route[] = [
   {
     method: HTTPRequests.get,
     path: "/boms",
