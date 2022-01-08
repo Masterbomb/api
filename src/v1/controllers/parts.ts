@@ -4,6 +4,7 @@ import { ResourceNotFound, HTTPError } from "../util/errors";
 import { Part } from "../entities/part";
 import { Supplier } from "../entities/supplier";
 import { Manufacturer } from "../entities/manufacturer";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 /**
  * @openapi
@@ -78,7 +79,7 @@ export class PartController {
   async one(request: Request, _response: Response, _next: NextFunction) {
     let result: Part | undefined;
     try {
-      result = await this.partRepository.findOne(request.params.id);
+      result = await this.partRepository.findOne(request.params.id, {relations: ["supplier", "manufacturer"]});
     } catch (err) {
       throw new HTTPError((err as Error).message);
     }
@@ -122,6 +123,48 @@ export class PartController {
     result.supplier = (await this.supplierRepository.findOne(result.supplier) as Supplier);
     result.manufacturer = (await this.manufacturerRepository.findOne(result.manufacturer) as Manufacturer);
     return result;
+  }
+
+  /**
+   * @openapi
+   * /parts/{id}:
+   *   put:
+   *     summary: Update a part by id
+   *     tags:
+   *       - Parts
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: number
+   *         required: true
+   *         description: part id
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Part'
+   *           examples:
+   *             partsPostExample:
+   *               $ref: '#/components/examples/partsPostExample'
+   *     responses:
+   *       201:
+   *         description: part updated successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/Part'
+   *       404:
+   *         description: part not found
+   */
+   async update(request: Request, _response: Response, _next: NextFunction) {
+    const result = await this.partRepository.findOne(request.params.id);
+    if (!result) throw new ResourceNotFound(`Could not find resource for part: ${request.params.id}`);
+    await this.partRepository.update(request.params.id, request.body as QueryDeepPartialEntity<Part>);
+    return this.partRepository.findOne(request.params.id, {relations: ["supplier", "manufacturer"]});
   }
 
   /**
