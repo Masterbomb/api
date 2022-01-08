@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 import { Supplier } from './v1/entities/supplier';
 import { Manufacturer } from './v1/entities/manufacturer';
 import { Part } from './v1/entities/part';
+import { Project } from './v1/entities/project';
 
 // setup ORM
 createConnection({
@@ -16,7 +17,8 @@ createConnection({
   entities: [
     Supplier,
     Manufacturer,
-    Part
+    Part,
+    Project
   ]
 }).then(_connection => {
   // start webserver
