@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { Supplier } from "../entities/supplier";
 import { ResourceNotFound, HTTPError } from "../util/errors";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 /**
  * @openapi
@@ -107,6 +108,48 @@ export class SupplierController {
    */
   async save(request: Request, _response: Response, _next: NextFunction) {
     return this.supplierRepository.save(request.body);
+  }
+
+  /**
+   * @openapi
+   * /suppliers/{id}:
+   *   put:
+   *     summary: Update a supplier by id
+   *     tags:
+   *       - Suppliers
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: number
+   *         required: true
+   *         description: supplier id
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Supplier'
+   *           examples:
+   *             suppliersPostExample:
+   *               $ref: '#/components/examples/suppliersPostExample'
+   *     responses:
+   *       201:
+   *         description: supplier updated successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/Supplier'
+   *       404:
+   *         description: supplier not found
+   */
+   async update(request: Request, response: Response, next: NextFunction) {
+    const result = await this.supplierRepository.findOne(request.params.id);
+    if (!result) throw new ResourceNotFound(`Could not find resource for supplier: ${request.params.id}`);
+    await this.supplierRepository.update(request.params.id, request.body as QueryDeepPartialEntity<Supplier>);
+    return this.one(request, response, next);
   }
 
   /**
