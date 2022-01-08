@@ -5,9 +5,8 @@ import {
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
   ManyToOne,
-  JoinTable
+  JoinColumn
 } from "typeorm";
 import { Project } from "./project";
 import { Part } from "./part";
@@ -61,15 +60,16 @@ export class Bom extends BaseEntity {
     onDelete: 'CASCADE',
     nullable: false
   })
+  @JoinColumn({name: "project_id"})
   project: Project;
 
-  @ManyToMany(() => Part, (part) => part.id, {
+  @ManyToOne(() => Part, (part) => part.id, {
     primary: true,
     onDelete: 'CASCADE',
     nullable: false
   })
-  @JoinTable()
-  part: Part[];
+  @JoinColumn({name: "part_id"})
+  part: Part;
 
 	@Column({nullable: false})
 	revision: string;
