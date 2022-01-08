@@ -141,7 +141,7 @@ export class ManufacturerController {
    *               type: array
    *               items:
    *                 $ref: '#/components/schemas/Manufacturer'
-   * .     404:
+   *       404:
    *         description: manufacturer not found
    */
   async update(request: Request, _response: Response, _next: NextFunction) {

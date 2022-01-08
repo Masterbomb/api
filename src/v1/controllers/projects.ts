@@ -142,7 +142,7 @@ export class ProjectController {
    *               type: array
    *               items:
    *                 $ref: '#/components/schemas/Project'
-   * .     404:
+   *       404:
    *         description: project not found
    */
    async update(request: Request, response: Response, next: NextFunction) {
