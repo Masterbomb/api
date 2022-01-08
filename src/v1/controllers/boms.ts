@@ -19,7 +19,7 @@ import { ResourceNotFound } from "../util/errors";
  *         project: 1
  *         part: 1
  *         revision: v1.2
- *         quanitity: 34
+ *         quantity: 34
  */
 export class BomController {
 

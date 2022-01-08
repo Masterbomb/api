@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 import { body, param, CustomValidator} from "express-validator";
-import { ProjectController } from "../controllers/projects";
+import { BomController } from "../controllers/boms";
 import { Route, Queries, HTTPRequests } from "./interfaces";
 import { Project } from "../entities/project";
 import { Part } from "../entities/part";
@@ -28,26 +28,26 @@ export const bomRoutes: Route[] = [
   {
     method: HTTPRequests.get,
     path: "/boms",
-    controller: ProjectController,
+    controller: BomController,
     action: Queries.all,
     validation: [],
   },
   {
     method: HTTPRequests.post,
     path: "/boms",
-    controller: ProjectController,
+    controller: BomController,
     action: Queries.save,
     validation: [
-      body('project').custom(isValidProject),
-      body('part').custom(isValidPart),
-      body('quantity').isInt({min: 1}),
+      body('project').isInt({min: 0}).custom(isValidProject),
+      body('part').isInt({min: 0}).custom(isValidPart),
+      body('quantity').isInt({min: 0}),
       body('revision').isString(),
     ],
   },
   {
     method: HTTPRequests.delete,
     path: "/boms/:id",
-    controller: ProjectController,
+    controller: BomController,
     action: Queries.remove,
     validation: [
       param('id').isInt({min: 0}),
