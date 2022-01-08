@@ -95,7 +95,7 @@ export class ManufacturerController {
    *             manufacturersPostExample:
    *               $ref: '#/components/examples/manufacturersPostExample'
    *     responses:
-   *       200:
+   *       201:
    *         description: manufacturer created successfully
    *         content:
    *           application/json:
@@ -106,6 +106,48 @@ export class ManufacturerController {
    */
   async save(request: Request, _response: Response, _next: NextFunction) {
     return this.manufacturerRepository.save(request.body);
+  }
+
+  /**
+   * @openapi
+   * /manufacturers/{id}:
+   *   put:
+   *     summary: Update a manufacturer by id
+   *     tags:
+   *       - Manufacturers
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: number
+   *         required: true
+   *         description: manufacturer id
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Manufacturer'
+   *           examples:
+   *             manufacturersPostExample:
+   *               $ref: '#/components/examples/manufacturersPostExample'
+   *     responses:
+   *       201:
+   *         description: Manufacturer updated successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/Manufacturer'
+   * .     404:
+   *         description: manufacturer not found
+   */
+  async update(request: Request, _response: Response, _next: NextFunction) {
+    const result = await this.manufacturerRepository.findOne(request.params.id);
+    if (!result) throw new ResourceNotFound(`Could not find resource for manufacturer: ${request.params.id}`);
+    await this.manufacturerRepository.update(request.params.id, request.body);
+    return this.manufacturerRepository.findOne(request.params.id);
   }
 
   /**
