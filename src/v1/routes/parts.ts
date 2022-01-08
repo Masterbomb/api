@@ -48,9 +48,9 @@ export const partRoutes: Route[] = [
     action: Queries.save,
     validation: [
       body('name').isString(),
-      body('manufacturer').optional().custom(isValidManufacturer),
-      body('supplier').optional().custom(isValidSupplier),
-      body('unit_price').isFloat({ min: 0 }),
+      body('manufacturer').optional().isInt({min: 0}).custom(isValidManufacturer),
+      body('supplier').optional().isInt({min: 0}).custom(isValidSupplier),
+      body('unit_price').isFloat({min: 0}),
     ],
   },
   {
