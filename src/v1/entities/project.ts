@@ -10,6 +10,7 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, U
  *       required:
  *         - name
  *         - description
+ *         - revision
  *       properties:
  *         id:
  *           type: number
@@ -19,6 +20,10 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, U
  *           type: string
  *           description: Project title
  *           example: OpenHerb
+ *         revision:
+ *           type: string
+ *           description: Semantic revision string (preferrably SemVer)
+ *           example: v1.1.3a
  *         description:
  *           type: string
  *           description: Project brief
@@ -42,6 +47,9 @@ export class Project extends BaseEntity {
 
 	@Column({nullable: true})
 	description: string;
+
+	@Column({nullable: true})
+	revision: string;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   public created_at: Date;

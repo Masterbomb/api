@@ -24,7 +24,7 @@ export class SupplierController {
   private supplierRepository = getRepository(Supplier);
 
   /**
-   * @swagger
+   * @openapi
    * /suppliers:
    *   get:
    *     summary: Returns the list of all suppliers
