@@ -48,7 +48,7 @@ export class PartController {
    *                 $ref: '#/components/schemas/Part'
    */
   async all(_request: Request, _response: Response, _next: NextFunction) {
-    return this.partRepository.find();
+    return this.partRepository.find({ relations: ["supplier", "manufacturer"] });
   }
 
   /**
