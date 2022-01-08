@@ -72,7 +72,7 @@ routes.forEach(route => {
         } else if (route.method === HTTPRequests.post || route.method === HTTPRequests.put){
           return res.status(201).send(result);
         } else {
-          return res.json(result);
+          return res.status(200).json(result);
         }
       } catch(err) {
         console.log(err.statusCode);
