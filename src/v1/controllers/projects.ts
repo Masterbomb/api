@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { Project } from "../entities/project";
 import { ResourceNotFound, HTTPError } from "../util/errors";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 /**
  * @openapi
@@ -17,7 +18,6 @@ import { ResourceNotFound, HTTPError } from "../util/errors";
  *     projectsPostExample:
  *       value:
  *         name: OpenHerb
- *         revision: v1.23
  *         description: Open source herb monitoring and analytics
  */
 export class ProjectController {
@@ -108,6 +108,48 @@ export class ProjectController {
    */
   async save(request: Request, _response: Response, _next: NextFunction) {
     return this.projectRepository.save(request.body);
+  }
+
+  /**
+   * @openapi
+   * /projects/{id}:
+   *   put:
+   *     summary: Update a projects by id
+   *     tags:
+   *       - Projects
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: number
+   *         required: true
+   *         description: project id
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Project'
+   *           examples:
+   *             projectsPostExample:
+   *               $ref: '#/components/examples/projectsPostExample'
+   *     responses:
+   *       201:
+   *         description: Project updated successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/Project'
+   * .     404:
+   *         description: project not found
+   */
+   async update(request: Request, response: Response, next: NextFunction) {
+    const result = await this.projectRepository.findOne(request.params.id);
+    if (!result) throw new ResourceNotFound(`Could not find resource for project: ${request.params.id}`);
+    await this.projectRepository.update(request.params.id, request.body as QueryDeepPartialEntity<Project>);
+    return this.one(request, response, next);
   }
 
   /**
