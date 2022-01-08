@@ -1,11 +1,11 @@
-import { body, param, CustomValidator } from "express-validator";
+import { body, param, CustomValidator, ValidationChain } from "express-validator";
 import { PartController } from "../controllers/parts";
 import { Route, Queries, HTTPRequests } from "./interfaces";
 import { getRepository } from "typeorm";
 import { Supplier } from "../entities/supplier";
 import { Manufacturer } from "../entities/manufacturer";
 
-
+// validation definitions
 const isValidSupplier: CustomValidator = async (id:number) => {
   await getRepository(Supplier).findOne(id).then(user => {
     if (!user) {
@@ -24,6 +24,18 @@ const isValidManufacturer: CustomValidator = async (id:number) => {
   });
 };
 
+const pkValidation: ValidationChain[] = [
+  param('id').isInt({min: 0})
+];
+
+const postValidation: ValidationChain[] = [
+  body('name').isString(),
+  body('manufacturer').optional().isInt({min: 0}).custom(isValidManufacturer),
+  body('supplier').optional().isInt({min: 0}).custom(isValidSupplier),
+  body('unit_price').isFloat({min: 0}),
+];
+
+// route definitions
 export const partRoutes: Route[] = [
   {
     method: HTTPRequests.get,
@@ -37,38 +49,27 @@ export const partRoutes: Route[] = [
     path: "/parts/:id",
     controller: PartController,
     action: Queries.one,
-    validation: [
-      param('id').isInt({min: 0}),
-    ]
+    validation: pkValidation
   },
   {
     method: HTTPRequests.post,
     path: "/parts",
     controller: PartController,
     action: Queries.save,
-    validation: [
-      body('name').isString(),
-      body('manufacturer').optional().isInt({min: 0}).custom(isValidManufacturer),
-      body('supplier').optional().isInt({min: 0}).custom(isValidSupplier),
-      body('unit_price').isFloat({min: 0}),
-    ],
+    validation: postValidation
   },
   {
     method: HTTPRequests.put,
     path: "/parts/:id",
     controller: PartController,
-    action: Queries.save,
-    validation: [
-      param('id').isInt({min: 0}),
-    ],
+    action: Queries.update,
+    validation: [...pkValidation, ...postValidation],
   },
   {
     method: HTTPRequests.delete,
     path: "/parts/:id",
     controller: PartController,
     action: Queries.remove,
-    validation: [
-      param('id').isInt({min: 0}),
-    ],
+    validation: pkValidation,
   }
 ];
