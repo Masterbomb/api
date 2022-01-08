@@ -1,3 +1,5 @@
+import { ValidationChain } from "express-validator";
+
 export enum HTTPRequests {
   get="get",
   post="post",
@@ -18,5 +20,5 @@ export interface Route {
   path: string;
   controller: any;
   action: Queries;
-  validation: any[];
+  validation: ValidationChain[];
 }
