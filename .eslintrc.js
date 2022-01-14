@@ -80,6 +80,14 @@ module.exports = {
             }
         ],
         "@typescript-eslint/naming-convention": "error",
+        "@typescript-eslint/no-unused-vars": [
+            "error", {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "args": "all",
+                "vars": "all"
+            }
+        ],
         "@typescript-eslint/no-empty-function": "error",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-explicit-any": "off",
