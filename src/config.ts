@@ -1,4 +1,4 @@
 
-export const port = process.env.SERVER_PORT || 3000;
+export const port:string = process.env.SERVER_PORT || "3000";
 
 
