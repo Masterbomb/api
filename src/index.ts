@@ -2,6 +2,7 @@ import app from './app';
 import { port } from './config';
 import { createConnection } from 'typeorm';
 import { Supplier } from './v1/entities/supplier';
+import { Manufacturer } from './v1/entities/manufacturer';
 
 // setup ORM
 createConnection({
@@ -12,7 +13,8 @@ createConnection({
   logging: true,
   synchronize: true, // translate entities to sql logic for table creation
   entities: [
-    Supplier
+    Supplier,
+    Manufacturer
   ]
 }).then(_connection => {
   // start webserver
