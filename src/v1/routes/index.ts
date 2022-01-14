@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
-import { SupplierController } from "../controller/supplier";
+import { supplierRoutes } from "./suppliers";
+import { Route } from "./interfaces";
 
-export const routes = [];
+export const routes: Route[] = supplierRoutes;
