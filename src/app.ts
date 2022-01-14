@@ -7,14 +7,21 @@ import cors from "cors";
 import { port } from "./config";
 import { Response, Request, NextFunction } from 'express';
 import { validationResult } from "express-validator";
+import { HTTPError } from "./v1/util/errors";
 
-interface Error {
-	message: string;
-	statusCode: number;
-}
-
-const handleError = (err:Error, _req:Request, res:Response, _next: NextFunction) => {
-  res.status(err.statusCode || 500).send(err.message);
+/**
+ * Principle JSON formatted error response. Convert all general errors to HTTPErrors.
+ *
+ * @param _err Error thrown on server
+ * @param _req request type
+ * @param res response object
+ * @param _next next middleware
+ */
+const handleError = (_err:Error, _req:Request, res:Response, _next: NextFunction) => {
+  const err:HTTPError = (!(_err instanceof HTTPError))? new HTTPError(_err.message):_err;
+  res.setHeader('Content-Type', 'application/json');
+  console.log("Hello");
+  res.status(err.statusCode).send({ status:err.statusCode, error: err.message});
 };
 
 const specs = swaggerJSDoc({
@@ -42,9 +49,9 @@ app.use(morgan("dev"));
 app.use("/api", swaggerUI.serve, swaggerUI.setup(specs));
 // use express types (make sure this is defined in front of the routes!)
 app.use(express.json());
+// The other middleware
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
-app.use(handleError);
 routes.forEach(route => {
   /* eslint-disable @typescript-eslint/no-unsafe-call */
   /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -61,6 +68,7 @@ routes.forEach(route => {
         const result = await (new (route.controller )())[route.action](req, res, next);
         return res.json(result);
       } catch(err) {
+        console.log(err.statusCode);
         next(err);
         return undefined;
       }
@@ -69,7 +77,6 @@ routes.forEach(route => {
   /* eslint-enable @typescript-eslint/no-unsafe-member-access */
   /* eslint-enable  @typescript-eslint/no-unsafe-call */
 });
-
-
+app.use(handleError);
 
 export default app;
