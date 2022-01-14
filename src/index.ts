@@ -20,6 +20,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(api_routes);
 
+if (!port) {
+    console.log("port unspecified.");
+    process.exit(1);
+}
+
 // start webserver
 app.listen(port, () => {
     console.log(`serving on port ${ port }`);

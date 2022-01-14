@@ -25,7 +25,7 @@ suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Res
         response.json(suppliers);
     } catch (err) {
         console.error(err);
-        response.status(500).json({ error: err.message || err });
+        response.status(500).json({ error: (err as Error).message});
     }
     return response;
 });
