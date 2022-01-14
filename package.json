@@ -37,7 +37,7 @@
     "eslint": "^8.6.0",
     "eslint-plugin-jsdoc": "^37.6.1",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "@types/pg": "^8.6.1",
+    "@types/pg": "^8.6.4",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "tslint": "^6.1.3",
