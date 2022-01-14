@@ -9,13 +9,13 @@ interface Error {
 	statusCode: number;
 }
 
-const handleError = (err:Error, _req:Request, res:Response) => {
+const handleError = (err:Error, _req:Request, res:Response, _next: NextFunction) => {
   res.status(err.statusCode || 500).send(err.message);
 };
 
 const app = express();
 // setup logging middleware
-app.use(morgan("combined"));
+app.use(morgan("tiny"));
 
 // use express types (make sure this is defined in front of the routes!)
 app.use(express.json());
@@ -37,7 +37,8 @@ routes.forEach(route => {
         const result = await (new (route.controller )())[route.action](req, res, next);
         return res.json(result);
       } catch(err) {
-        return next(err);
+        next(err);
+        return undefined;
       }
     });
   /* eslint-enable @typescript-eslint/no-unsafe-assignment */
