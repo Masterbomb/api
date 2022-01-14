@@ -63,7 +63,7 @@ export class SupplierController {
     try {
       result = await this.supplierRepository.findOne(request.params.id);
     } catch (err) {
-      throw new HTTPError(err.message);
+      throw new HTTPError((err as Error).message);
     }
     if (!result) {
       throw new ResourceNotFound(`Could not find resource for supplier: ${request.params.id}`);
