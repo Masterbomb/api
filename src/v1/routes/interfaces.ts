@@ -14,7 +14,7 @@ export enum Queries {
 
 export interface Route {
   method: HTTPRequests;
-  route: string;
+  path: string;
   controller: any;
   action: Queries;
   validation: any[];
