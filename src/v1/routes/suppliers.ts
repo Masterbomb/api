@@ -1,6 +1,8 @@
+
 import { body, param } from "express-validator";
-import { SupplierController } from "../controller/supplier";
+import { SupplierController } from "../controllers/supplier";
 import { Route, Queries, HTTPRequests } from "./interfaces";
+
 
 export const supplierRoutes: Route[] = [
   {
@@ -17,7 +19,7 @@ export const supplierRoutes: Route[] = [
     action: Queries.one,
     validation: [
       param('id').isInt(),
-    ],
+    ]
   },
   {
     method: HTTPRequests.post,
