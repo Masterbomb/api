@@ -1,6 +1,9 @@
 import express from 'express';
 import morgan from 'morgan';
-import { routes } from "./v1/routes";
+import swaggerUI from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import routes from "./v1";
+import { port } from "./config";
 import { Response, Request, NextFunction } from 'express';
 import { validationResult } from "express-validator";
 
@@ -13,10 +16,29 @@ const handleError = (err:Error, _req:Request, res:Response, _next: NextFunction)
   res.status(err.statusCode || 500).send(err.message);
 };
 
+const specs = swaggerJSDoc({
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "MasterBom API",
+      version: "1.0.0",
+      description: "Composite bill of materials",
+    },
+    servers: [
+      {
+        url: `http://localhost:${ port }`,
+      },
+    ],
+  },
+  apis: [
+    "**/*.ts"
+  ],
+});
 const app = express();
+
 // setup logging middleware
 app.use(morgan("tiny"));
-
+app.use("/", swaggerUI.serve, swaggerUI.setup(specs));
 // use express types (make sure this is defined in front of the routes!)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,7 +48,7 @@ routes.forEach(route => {
   /* eslint-disable @typescript-eslint/no-unsafe-member-access */
   /* eslint-disable @typescript-eslint/no-unsafe-assignment */
   (app as any)[route.method](
-    route.route,
+    route.path,
     ...route.validation,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
