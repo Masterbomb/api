@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { Supplier } from "../entities/supplier";
+import { ResourceNotFound, HTTPError } from "../util/errors";
 
 /**
  * @openapi
@@ -33,8 +34,41 @@ export class SupplierController {
     return this.supplierRepository.find();
   }
 
+  /**
+   * @openapi
+   * /suppliers/{id}:
+   *   get:
+   *     summary: Get supplier by id
+   *     tags:
+   *       - Suppliers
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: number
+   *         required: true
+   *         description: The supplier id
+   *     responses:
+   *       200:
+   *         description: The supplier schema by id
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Supplier'
+   *       404:
+   *         description: Supplier not found
+   */
   async one(request: Request, _response: Response, _next: NextFunction) {
-    return this.supplierRepository.findOne(request.params.id);
+    let result:Supplier|undefined;
+    try {
+      result = await this.supplierRepository.findOne(request.params.id);
+    } catch (err) {
+      throw new HTTPError(err.message);
+    }
+    if (!result) {
+      throw new ResourceNotFound(`Could not find resource for supplier: ${request.params.id}`);
+    }
+    return result;
   }
 
   async save(request: Request, _response: Response, _next: NextFunction) {
