@@ -5,14 +5,14 @@ import { Route, Queries, HTTPRequests } from "./interfaces";
 export const supplierRoutes: Route[] = [
   {
     method: HTTPRequests.get,
-    route: "/suppliers",
+    path: "/suppliers",
     controller: SupplierController,
     action: Queries.all,
     validation: [],
   },
   {
     method: HTTPRequests.get,
-    route: "/suppliers/:id",
+    path: "/suppliers/:id",
     controller: SupplierController,
     action: Queries.one,
     validation: [
@@ -21,7 +21,7 @@ export const supplierRoutes: Route[] = [
   },
   {
     method: HTTPRequests.post,
-    route: "/suppliers",
+    path: "/suppliers",
     controller: SupplierController,
     action: Queries.save,
     validation: [
@@ -31,7 +31,7 @@ export const supplierRoutes: Route[] = [
   },
   {
     method: HTTPRequests.delete,
-    route: "/suppliers/:id",
+    path: "/suppliers/:id",
     controller: SupplierController,
     action: Queries.remove,
     validation: [
