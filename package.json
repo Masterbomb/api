@@ -35,7 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "eslint": "^8.6.0",
-    "eslint-plugin-jsdoc": "^37.0.3",
+    "eslint-plugin-jsdoc": "^37.6.1",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "@types/pg": "^8.6.1",
     "nodemon": "^2.0.15",
