@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "clean-dist": "rm -rf dist/*",
-    "lint": "eslint -c .eslintrc.js --ext .ts .",
+    "lint": "eslint --ext .ts .",
     "daemon": "nodemon --watch src -e js,ts,ejs,css --exec npm run dev:serve",
     "tsc": "tsc",
     "probe-api": "",
