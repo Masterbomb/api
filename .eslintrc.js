@@ -80,14 +80,8 @@ module.exports = {
             }
         ],
         "@typescript-eslint/naming-convention": "error",
-        "@typescript-eslint/no-unsafe-argument": [
-            "error", {
-                "argsIgnorePattern": "^err",
-                "varsIgnorePattern": "^err",
-                "args": "all",
-                "vars": "all"
-            }
-        ],
+        "@typescript-eslint/no-unsafe-argument": "error",
+        "@typescript-eslint/no-unsafe-member-access": "error",
         "@typescript-eslint/no-unused-vars": [
             "error", {
                 "argsIgnorePattern": "^_",
