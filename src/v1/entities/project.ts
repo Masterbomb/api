@@ -5,21 +5,21 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, U
  * @openapi
  * components:
  *   schemas:
- *     Supplier:
+ *     Project:
  *       type: object
  *       required:
  *         - name
- *         - website
+ *         - description
  *       properties:
  *         id:
  *           type: number
- *           description: The auto-generated id of the supplier
+ *           description: The auto-generated id of the project
  *         name:
  *           type: string
- *           description: The supplier name
- *         website:
+ *           description: Project title
+ *         description:
  *           type: string
- *           description: The supplier webpage
+ *           description: Project brief
  *         created_at:
  *           type: date-time
  *           description: created at date
@@ -28,21 +28,21 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, U
  *           description: last modified date
  *       example:
  *         id: 1
- *         name: Digikey
- *         website: https://www.digikey.com/
+ *         name: OpenHerb
+ *         description: Open source herb monitoring and analytics
  */
 @Entity()
-export class Supplier extends BaseEntity {
+export class Project extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
 	@Column({nullable: false})
 	name: string;
 
-	@Column({nullable: false})
-	website: string;
+	@Column({nullable: true})
+	description: string;
 
-	@CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   public created_at: Date;
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
