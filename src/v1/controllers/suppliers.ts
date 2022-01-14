@@ -47,16 +47,16 @@ export class SupplierController {
    *         schema:
    *           type: number
    *         required: true
-   *         description: The supplier id
+   *         description: supplier id
    *     responses:
    *       200:
-   *         description: The supplier schema by id
+   *         description: supplier schema by id
    *         content:
    *           application/json:
    *             schema:
    *               $ref: '#/components/schemas/Supplier'
    *       404:
-   *         description: Supplier not found
+   *         description: supplier not found
    */
   async one(request: Request, _response: Response, _next: NextFunction) {
     let result:Supplier|undefined;
@@ -65,19 +65,64 @@ export class SupplierController {
     } catch (err) {
       throw new HTTPError((err as Error).message);
     }
-    if (!result) {
-      throw new ResourceNotFound(`Could not find resource for supplier: ${request.params.id}`);
-    }
+    if (!result)  throw new ResourceNotFound(`Could not find resource for supplier: ${request.params.id}`);
     return result;
   }
 
+  /**
+   * @openapi
+   * /suppliers:
+   *   post:
+   *     summary: Create new supplier
+   *     tags:
+   *       - Suppliers
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Supplier'
+   *     responses:
+   *       200:
+   *         description: supplier created successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Supplier'
+   *       400:
+   *         description: Bad request. Request may of failed validation checks.
+   */
   async save(request: Request, _response: Response, _next: NextFunction) {
     return this.supplierRepository.save(request.body);
   }
 
+  /**
+   * @openapi
+   * /suppliers/{id}:
+   *   delete:
+   *     summary: Delete supplier by id
+   *     tags:
+   *       - Suppliers
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: number
+   *         required: true
+   *         description: supplier id
+   *     responses:
+   *       200:
+   *         description: supplier removed successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Supplier'
+   *       404:
+   *         description: supplier not found.
+   */
   async remove(request: Request, _response: Response, _next: NextFunction) {
-    const userToRemove = await this.supplierRepository.findOne(request.params.id);
-    if (!userToRemove) throw new Error('User not found');
-    await this.supplierRepository.remove(userToRemove);
+    const result = await this.supplierRepository.findOne(request.params.id);
+    if (!result) throw new ResourceNotFound(`Could not find resource for supplier: ${request.params.id}`);
+    await this.supplierRepository.remove(result);
   }
 }
