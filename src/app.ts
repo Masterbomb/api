@@ -22,6 +22,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 routes.forEach(route => {
+  /* eslint-disable @typescript-eslint/no-unsafe-call */
+  /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
   (app as any)[route.method](
     route.route,
     ...route.validation,
@@ -32,11 +35,14 @@ routes.forEach(route => {
           return res.status(400).json({ errors: errors.array() });
         }
         const result = await (new (route.controller )())[route.action](req, res, next);
-        res.json(result);
+        return res.json(result);
       } catch(err) {
-        next(err);
+        return next(err);
       }
     });
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment */
+  /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+  /* eslint-enable  @typescript-eslint/no-unsafe-call */
 });
 
 app.use(handleError);
