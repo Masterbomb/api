@@ -12,7 +12,6 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
  *       properties:
  *         id:
  *           type: number
- *           required: true
  *           description: The auto-generated id of the supplier
  *         name:
  *           type: string
