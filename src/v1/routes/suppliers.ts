@@ -1,6 +1,5 @@
-
 import { body, param } from "express-validator";
-import { SupplierController } from "../controllers/supplier";
+import { SupplierController } from "../controllers/suppliers";
 import { Route, Queries, HTTPRequests } from "./interfaces";
 
 
