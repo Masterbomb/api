@@ -25,9 +25,8 @@ export const supplierRoutes: Route[] = [
     controller: SupplierController,
     action: Queries.save,
     validation: [
-      body('firstName').isString(),
-      body('lastName').isString(),
-      body('age').isInt({ min: 0 }).withMessage('age must be a positive integer'),
+      body('name').isString(),
+      body('website').isString(),
     ],
   },
   {
