@@ -14,7 +14,7 @@ export class ManufacturerController {
   private manufacturerRepository = getRepository(Manufacturer);
 
   /**
-   * @swagger
+   * @openapi
    * /manufacturers:
    *   get:
    *     summary: Returns the list of all manufacturers
