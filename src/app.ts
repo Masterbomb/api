@@ -8,6 +8,7 @@ import { port } from "./config";
 import { Response, Request, NextFunction } from 'express';
 import { validationResult } from "express-validator";
 import { HTTPError } from "./v1/util/errors";
+import { HTTPRequests } from './v1/routes/interfaces';
 
 /**
  * Principle JSON formatted error response. Convert all general errors to HTTPErrors.
@@ -20,7 +21,6 @@ import { HTTPError } from "./v1/util/errors";
 const handleError = (_err:Error, _req:Request, res:Response, _next: NextFunction) => {
   const err:HTTPError = (!(_err instanceof HTTPError))? new HTTPError(_err.message):_err;
   res.setHeader('Content-Type', 'application/json');
-  console.log("Hello");
   res.status(err.statusCode).send({ status:err.statusCode, error: err.message});
 };
 
@@ -66,7 +66,13 @@ routes.forEach(route => {
           return res.status(400).json({ errors: errors.array() });
         }
         const result = await (new (route.controller )())[route.action](req, res, next);
-        return res.json(result);
+        // custom success response for each http request type
+        if (route.method === HTTPRequests.delete) {
+          return res.status(204).send();
+        } else {
+          return res.json(result);
+        }
+
       } catch(err) {
         console.log(err.statusCode);
         next(err);
