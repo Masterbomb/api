@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import routes from "./v1";
+import cors from "cors";
 import { port } from "./config";
 import { Response, Request, NextFunction } from 'express';
 import { validationResult } from "express-validator";
@@ -26,7 +27,7 @@ const specs = swaggerJSDoc({
     },
     servers: [
       {
-        url: `http://localhost:${ port }`,
+        url: `http://localhost:${ port }/v1`,
       },
     ],
   },
@@ -37,12 +38,13 @@ const specs = swaggerJSDoc({
 const app = express();
 
 // setup logging middleware
-app.use(morgan("tiny"));
-app.use("/", swaggerUI.serve, swaggerUI.setup(specs));
+app.use(morgan("dev"));
+app.use("/api", swaggerUI.serve, swaggerUI.setup(specs));
 // use express types (make sure this is defined in front of the routes!)
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(handleError);
 routes.forEach(route => {
   /* eslint-disable @typescript-eslint/no-unsafe-call */
   /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -68,6 +70,6 @@ routes.forEach(route => {
   /* eslint-enable  @typescript-eslint/no-unsafe-call */
 });
 
-app.use(handleError);
+
 
 export default app;
