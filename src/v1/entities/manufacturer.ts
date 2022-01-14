@@ -23,7 +23,6 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, U
  *           type: date-time
  *           description: last modified date
  *       example:
- *         id: 1
  *         name: Texas Instruments
  */
 @Entity()
