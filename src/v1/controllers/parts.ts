@@ -9,6 +9,19 @@ import { Part } from "../entities/part";
  *   name: Parts
  *   description: Parts endpoints
  */
+
+/**
+ * @openapi
+ * components:
+ *   examples:
+ *     partsPostExample:
+ *       value:
+ *         name: LM555
+ *         description: SMD 555 timer IC
+ *         unit_price: 3.03
+ *         supplier: 1
+ *         manufacturer: 1
+ */
 export class PartController {
 
   private partRepository = getRepository(Part);
@@ -82,11 +95,9 @@ export class PartController {
    *         application/json:
    *           schema:
    *             $ref: '#/components/schemas/Part'
-   *           example:
-   *             name: LM555
-   *             unit_price: 3.03
-   *             manufacturer: 1
-   *             supplier: 3
+   *           examples:
+   *             partsPostExample:
+   *               $ref: '#/components/examples/partsPostExample'
    *     responses:
    *       200:
    *         description: part created successfully
