@@ -1,36 +1,28 @@
-import express from 'express';
-import createError from 'http-errors';
-import api_routes from './v1';
-import { postgres } from './db';
-import { logger_middleware } from './v1/middlewares/logger';
-import { NextFunction, Response, Request } from 'express';
+import app from './app';
+import { port } from './config';
+import { createConnection } from 'typeorm';
+import { Supplier } from './v1/entities/supplier';
+import { Manufacturer } from './v1/entities/manufacturer';
+import { Part } from './v1/entities/part';
 
-// port is now available to the Node.js runtime
-// as if it were an environment variable
-const port = process.env.SERVER_PORT;
-
-// connect db
-postgres.connect_db();
-
-const app = express();
-// setup view engine
-app.use(logger_middleware);
-// use express types (make sure this is defined in front of the routes!)
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(api_routes);
-
-if (!port) {
-    console.log("port unspecified.");
-    process.exit(1);
-}
-
-// start webserver
-app.listen(port, () => {
+// setup ORM
+createConnection({
+  type: 'postgres',
+  database: process.env.PGDATABASE,
+  username: process.env.PGUSER,
+  password: process.env.PGPASS,
+  logging: true,
+  synchronize: true, // translate entities to sql logic for table creation
+  entities: [
+    Supplier,
+    Manufacturer,
+    Part
+  ]
+}).then(_connection => {
+  // start webserver
+  app.listen(port, () => {
     console.log(`serving on port ${ port }`);
-});
+  });
+  // here you can start to work with your entities
+}).catch(error => console.log(error));
 
-app.use((_req:Request, _res:Response, next:NextFunction) => {
-    // forward 404 error
-    next(createError(404));
-});

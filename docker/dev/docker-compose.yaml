@@ -8,6 +8,8 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin 
       POSTGRES_DB: dev
+    ports:
+      - '5432:5432' # for pgadmin inspection
     volumes:
       - masterbom-db:/var/lib/postgresql/data
       - "./psql/initdb.sql:/docker-entrypoint-initdb.d/init.sql"
@@ -15,7 +17,7 @@ services:
   api:
     container_name: api
     ports:
-      - '5000:5000'
+      - '3000:3000'
     build:
       context: ../../ 
       dockerfile: docker/dev/Dockerfile
@@ -24,10 +26,11 @@ services:
     environment:
       NODE_ENV: development
       PGHOST: psql
-      PGUSER: admin 
+      PGUSER: admin
+      PGPASS: admin 
       PGDATABASE: dev
       PGPORT: 5432
-      SERVER_PORT: 5000
+      SERVER_PORT: 3000
     depends_on:
       - psql
 

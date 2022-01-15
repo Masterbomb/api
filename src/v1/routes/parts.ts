@@ -1,123 +1,65 @@
-/**
- * parts.ts
- *
- * API queries for /parts subroute
- *
- * @module partsRouter
- */
+import { body, param, CustomValidator } from "express-validator";
+import { PartController } from "../controllers/parts";
+import { Route, Queries, HTTPRequests } from "./interfaces";
+import { getRepository } from "typeorm";
+import { Supplier } from "../entities/supplier";
+import { Manufacturer } from "../entities/manufacturer";
 
-import { errors } from 'pg-promise';
-import { Router, Request, Response } from 'express';
-import { postgres } from '../../db';
-import { pk_guard } from '../interfaces/params';
 
-const partsRouter = Router();
-const table = "parts";
-
-/** GET /v1/parts/ */
-partsRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
-    try {
-        const db = postgres.get_db();
-        const parts = await db.any(`
-            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM ${table}`
-        );
-        response.json(parts);
-    } catch (err) {
-        console.error(err);
-        response.status(500).json({ error: err.message || err });
+const isValidSupplier: CustomValidator = async (id:number) => {
+  await getRepository(Supplier).findOne(id).then(user => {
+    if (!user) {
+      return Promise.reject('Supplier does not exist');
     }
-    return response;
-});
+    return Promise.resolve('Supplier exists');
+  });
+};
 
-/** GET /v1/parts/:id */
-partsRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
-    if (pk_guard(request.params)) {
-        try {
-            const db = postgres.get_db();
-            const parts = await db.one(`
-                SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM ${table}
-                WHERE id = $[id]`,
-                { id: request.params.id }
-            );
-            response.json(parts);
-        } catch (err) {
-            console.error(err);
-            // since the param is the pk more than one response row is not possible
-            if (err instanceof errors.QueryResultError) {
-                response.status(404).json({error: 'Requested part not found' });
-            } else {
-                response.status(500).json({ error: 'The server experienced an internal error' });
-            }
-        }
-    } else {
-        response.status(400).json({ error: 'Bad Request: id param must be an integer' });
+const isValidManufacturer: CustomValidator = async (id:number) => {
+  await getRepository(Manufacturer).findOne(id).then(user => {
+    if (!user) {
+      return Promise.reject('Manufacturer does not exist');
     }
-    return response;
-});
+    return Promise.resolve('Manufacturer exists');
+  });
+};
 
-/** POST /v1/parts/ */
-partsRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
-    try {
-        const db = postgres.get_db();
-        const id = await db.one(`
-            INSERT INTO ${table}( name, description, manufacturer_id, supplier_id, unit_price )
-            VALUES( $[name], $[description], $[manufacturer_id], $[supplier_id], $[unit_price] )
-            RETURNING id;`,
-            {...request.body}
-        );
-        response.status(201).json({ id });
-    } catch (err) {
-        console.error(err);
-        response.status(500).json({ error: err.message || err });
-    }
-    return response;
-});
-
-/** PUT /v1/parts/ */
-partsRouter.put('/', async (request:Request, response:Response):Promise<Response> => {
-    try {
-        const db = postgres.get_db();
-        await db.none(`
-            UPDATE ${table}
-            SET name = $[name], description = $[description], manufacturer_id = $[manufacturer_id],
-            supplier_id = $[supplier_id], unit_price = $[unit_price]
-            WHERE id = $[id]`,
-            { ...request.body }
-        );
-        // use .send() to send empty response body for 204
-        response.status(204).send();
-    } catch (err) {
-        console.error(err);
-        if (err instanceof errors.QueryResultError) {
-            // not sure what status code to return here but it boils down to a bad request
-            console.error("pg-promise rejected with " + err + "message: " + err.message);
-            response.status(401).json({error: 'Bad Request' });
-        } else {
-            response.status(500).json({ error: 'The server experienced an internal error' });
-        }
-    }
-    return response;
-});
-
-/** DELETE /v1/parts/:id */
-partsRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
-    if (pk_guard(request.params)) {
-        try {
-            const db = postgres.get_db();
-            const id = await db.result(`
-                DELETE FROM ${table}
-                WHERE id = $[id]`,
-                { id: request.params.id }, (r:any) => r.rowCount
-            );
-            response.json({ id });
-        } catch (err) {
-            console.error(err);
-            response.status(500).json({ error: err.message || err });
-        }
-    } else {
-        response.status(400).json({ error: 'Bad Request: id param must be an integer' });
-    }
-    return response;
-});
-
-export default partsRouter;
+export const partRoutes: Route[] = [
+  {
+    method: HTTPRequests.get,
+    path: "/parts",
+    controller: PartController,
+    action: Queries.all,
+    validation: [],
+  },
+  {
+    method: HTTPRequests.get,
+    path: "/parts/:id",
+    controller: PartController,
+    action: Queries.one,
+    validation: [
+      param('id').isInt(),
+    ]
+  },
+  {
+    method: HTTPRequests.post,
+    path: "/parts",
+    controller: PartController,
+    action: Queries.save,
+    validation: [
+      body('name').isString(),
+      body('manufacturer').custom(isValidManufacturer),
+      body('supplier').custom(isValidSupplier),
+      body('unit_price').isNumeric(),
+    ],
+  },
+  {
+    method: HTTPRequests.delete,
+    path: "/parts/:id",
+    controller: PartController,
+    action: Queries.remove,
+    validation: [
+      param('id').isInt(),
+    ],
+  }
+];

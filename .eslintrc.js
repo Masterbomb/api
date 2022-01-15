@@ -80,6 +80,16 @@ module.exports = {
             }
         ],
         "@typescript-eslint/naming-convention": "error",
+        "@typescript-eslint/no-unsafe-argument": "error",
+        "@typescript-eslint/no-unsafe-member-access": "error",
+        "@typescript-eslint/no-unused-vars": [
+            "error", {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "args": "all",
+                "vars": "all"
+            }
+        ],
         "@typescript-eslint/no-empty-function": "error",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-explicit-any": "off",
@@ -134,7 +144,7 @@ module.exports = {
         ],
         "id-match": "error",
         "jsdoc/check-alignment": "error",
-        "jsdoc/check-indentation": "error",
+        "jsdoc/check-indentation": "off",
         "jsdoc/newline-after-description": "error",
         "max-classes-per-file": [
             "error",
@@ -152,7 +162,7 @@ module.exports = {
         "no-fallthrough": "off",
         "no-invalid-this": "off",
         "no-new-wrappers": "error",
-        "no-shadow": "error",
+        "no-shadow": "off", // temp fix for enum declarations
         "no-throw-literal": "error",
         "no-trailing-spaces": "error",
         "no-undef-init": "error",
