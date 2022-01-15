@@ -61,7 +61,7 @@ export class Part extends BaseEntity {
   @Column({nullable: false})
   name: string;
 
-  @Column({type: "decimal", default: 0, precision:2, scale: 5, nullable: false})
+  @Column({type: "decimal", default: 0, precision: 5, scale: 2, nullable: false})
   unit_price: number;
 
   @OneToMany(() => Manufacturer, (manufacturer) => manufacturer, {
