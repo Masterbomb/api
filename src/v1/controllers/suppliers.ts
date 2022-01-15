@@ -9,6 +9,16 @@ import { ResourceNotFound, HTTPError } from "../util/errors";
  *   name: Suppliers
  *   description: Suppliers endpoints
  */
+
+/**
+ * @openapi
+ * components:
+ *   examples:
+ *     suppliersPostExample:
+ *       value:
+ *         name: Digikey
+ *         website: https://www.digikey.com/
+ */
 export class SupplierController {
 
   private supplierRepository = getRepository(Supplier);
@@ -82,6 +92,9 @@ export class SupplierController {
    *         application/json:
    *           schema:
    *             $ref: '#/components/schemas/Supplier'
+   *           examples:
+   *             suppliersPostExample:
+   *               $ref: '#/components/examples/suppliersPostExample'
    *     responses:
    *       200:
    *         description: supplier created successfully
@@ -111,12 +124,8 @@ export class SupplierController {
    *         required: true
    *         description: supplier id
    *     responses:
-   *       200:
+   *       204:
    *         description: supplier removed successfully
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Supplier'
    *       404:
    *         description: supplier not found.
    */
