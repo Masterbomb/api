@@ -13,17 +13,19 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, U
  *         id:
  *           type: number
  *           description: The auto-generated id of the manufacturer
+ *           example: 1
  *         name:
  *           type: string
  *           description: The supplier name
+ *           example: Texas Instruments
  *         created_at:
- *           type: date-time
+ *           type: datetime
  *           description: created at date
+ *           example: 2022-01-14T19:39:26.333Z
  *         updated_at:
- *           type: date-time
+ *           type: datetime
  *           description: last modified date
- *       example:
- *         name: Texas Instruments
+ *           example: 2022-01-14T19:39:26.333Z
  */
 @Entity()
 export class Manufacturer extends BaseEntity {

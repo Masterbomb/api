@@ -25,15 +25,19 @@ import { Supplier } from "./supplier";
  *         id:
  *           type: number
  *           description: The auto-generated id of the part
+ *           example: 1
  *         name:
  *           type: string
  *           description: Part name
+ *           example: LM555
  *         description:
  *           type: string
  *           description: Part brief
+ *           example: SMD 555 timer IC
  *         unit_price:
  *           type: double
  *           minimum: 0
+ *           example: 3.03
  *         supplier:
  *           $ref: '#/components/schemas/Supplier'
  *           description: Part supplier
@@ -43,13 +47,11 @@ import { Supplier } from "./supplier";
  *         created_at:
  *           type: date-time
  *           description: created at date
+ *           example: 2022-01-14T19:39:26.333Z
  *         updated_at:
  *           type: date-time
  *           description: last modified date
- *       example:
- *         name: LM555CM
- *         description: 555 timer IC
- *         unit_price: 3.03
+ *           example: 2022-01-14T19:39:26.333Z
  */
 @Entity()
 export class Part extends BaseEntity {

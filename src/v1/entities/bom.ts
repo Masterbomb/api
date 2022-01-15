@@ -30,18 +30,18 @@ import { Part } from "./part";
  *         net_price:
  *           type: double
  *           minimum: 0
+ *           example: 34.08
  *         created_at:
  *           type: date-time
  *           description: created at date
+ *           example: 2022-01-14T19:39:26.333Z
  *         updated_at:
  *           type: date-time
  *           description: last modified date
+ *           example: 2022-01-14T19:39:26.333Z
  */
 @Entity()
 export class Bom extends BaseEntity {
-
-  @Column({nullable: false})
-  name: string;
 
   @Column({type: "decimal", default: 0, precision:2, scale: 5, nullable: false})
   net_price: number;

@@ -14,22 +14,23 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, U
  *         id:
  *           type: number
  *           description: The auto-generated id of the project
+ *           example: 1
  *         name:
  *           type: string
  *           description: Project title
+ *           example: OpenHerb
  *         description:
  *           type: string
  *           description: Project brief
+ *           example: Open source herb monitoring and analytics
  *         created_at:
  *           type: date-time
  *           description: created at date
+ *           example: 2022-01-14T19:39:26.333Z
  *         updated_at:
  *           type: date-time
  *           description: last modified date
- *       example:
- *         id: 1
- *         name: OpenHerb
- *         description: Open source herb monitoring and analytics
+ *           example: 2022-01-14T19:39:26.333Z
  */
 @Entity()
 export class Project extends BaseEntity {
