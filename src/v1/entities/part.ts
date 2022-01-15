@@ -6,7 +6,7 @@ import {
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany
+  ManyToOne
 } from "typeorm";
 import { Manufacturer } from "./manufacturer";
 import { Supplier } from "./supplier";
@@ -64,13 +64,13 @@ export class Part extends BaseEntity {
   @Column({type: "decimal", default: 0, precision: 5, scale: 2, nullable: false})
   unit_price: number;
 
-  @OneToMany(() => Manufacturer, (manufacturer) => manufacturer, {
+  @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.id, {
     onDelete: 'SET NULL',
     nullable: true
   })
   manufacturer: Manufacturer;
 
-  @OneToMany(() => Supplier, (supplier) => supplier, {
+  @ManyToOne(() => Supplier, (supplier) => supplier.id, {
     onDelete: 'SET NULL',
     nullable: true
   })
