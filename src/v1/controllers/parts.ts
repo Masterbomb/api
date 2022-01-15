@@ -2,6 +2,8 @@ import { getRepository } from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { ResourceNotFound, HTTPError } from "../util/errors";
 import { Part } from "../entities/part";
+import { Supplier } from "../entities/supplier";
+import { Manufacturer } from "../entities/manufacturer";
 
 /**
  * @openapi
@@ -25,6 +27,8 @@ import { Part } from "../entities/part";
 export class PartController {
 
   private partRepository = getRepository(Part);
+  private supplierRepository = getRepository(Supplier);
+  private manufacturerRepository = getRepository(Manufacturer);
 
   /**
    * @openapi
@@ -109,7 +113,15 @@ export class PartController {
    *         description: Bad request. Request may of failed validation checks.
    */
   async save(request: Request, _response: Response, _next: NextFunction) {
-    return this.partRepository.save(request.body);
+    let result: Part;
+    try{
+      result = (await this.partRepository.save(request.body) as Part);
+    } catch (err) {
+      throw new HTTPError((err as Error).message);
+    }
+    result.supplier = (await this.supplierRepository.findOne(result.supplier) as Supplier);
+    result.manufacturer = (await this.manufacturerRepository.findOne(result.manufacturer) as Manufacturer);
+    return result;
   }
 
   /**
