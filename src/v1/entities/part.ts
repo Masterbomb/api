@@ -47,10 +47,9 @@ import { Supplier } from "./supplier";
  *           type: date-time
  *           description: last modified date
  *       example:
- *         id: 1
  *         name: LM555CM
  *         description: 555 timer IC
- *         unit_price: $3.03
+ *         unit_price: 3.03
  */
 @Entity()
 export class Part extends BaseEntity {
