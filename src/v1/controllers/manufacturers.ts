@@ -9,6 +9,15 @@ import { Manufacturer } from "../entities/manufacturer";
  *   name: Manufacturers
  *   description: Manufacturers endpoints
  */
+
+/**
+ * @openapi
+ * components:
+ *   examples:
+ *     manufacturersPostExample:
+ *       value:
+ *         name: Texas Instruments
+ */
 export class ManufacturerController {
 
   private manufacturerRepository = getRepository(Manufacturer);
@@ -82,6 +91,9 @@ export class ManufacturerController {
    *         application/json:
    *           schema:
    *             $ref: '#/components/schemas/Manufacturer'
+   *           examples:
+   *             manufacturersPostExample:
+   *               $ref: '#/components/examples/manufacturersPostExample'
    *     responses:
    *       200:
    *         description: manufacturer created successfully
